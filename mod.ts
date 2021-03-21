@@ -1,14 +1,15 @@
 import server from "./src/utils/server.ts";
-import { nanoid } from './deps.ts'
-nanoid(10)
-console.log('[Entropy] online')
+import { nanoid } from "./deps.ts";
+import CONFIG from "./configs.ts";
+import Database from "./src/utils/database.ts";
 
+console.log("[Entropy] online");
 type files = {
-    [key: string]: Blob
-}
+    [key: string]: Blob;
+};
 
-server.post("/upload", async (req) => {
-    console.log('image upload :eyes:')
+server.post("/upload", (req: { files: files }) => {
+    // console.log("image upload :eyes:");
 
     let files: files = req.files;
     //await console.log(files)
@@ -16,18 +17,25 @@ server.post("/upload", async (req) => {
     const mappedFiles = Object.entries(files).map(([name, blob]) => ({
         name: nanoid(15),
         file: name,
-        ext: name.split('.').pop(),
-        data: blob
-    })
-    )
-    //    await console.log(mappedFiles)
-    await console.log('')
-    mappedFiles.forEach(async file => {
-        let data = new Uint8Array(await file.data.arrayBuffer());
-        console.log(file);
+        ext: name.split(".").pop(),
+        data: blob,
+    }));
 
-        await Deno.writeFile(`/var/data/denoimages/${file.name}.${file.ext}`, data, { create: true })
-    })
+    mappedFiles.forEach(async (file) => {
+        let data = new Uint8Array(await file.data.arrayBuffer());
+
+        console.log(`${CONFIG.ENTROPY_IMAGES}/${file.name}.${file.ext}`)
+        await Database.insertOne({
+            file: file.file,
+            name: file.name,
+            ext: file.ext
+        })
+        await Deno.writeFile(
+            `${CONFIG.ENTROPY_IMAGES}/${file.name}.${file.ext}`,
+            data,
+            { create: true },
+        );
+    });
     //await Deno.writeFile(newProfilePicture.name, new Uint8Array(await newProfilePicture.arrayBuffer()));
 
     return "Uploaded!";

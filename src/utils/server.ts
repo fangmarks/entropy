@@ -1,6 +1,5 @@
-import { Aqua } from '../../deps.ts'
+import { Aqua } from "../../deps.ts";
 
-const server = new Aqua(3621)
+const server = new Aqua(3621);
 
-
-export default server
+export default server;

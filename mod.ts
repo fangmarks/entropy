@@ -3,6 +3,10 @@ import { nanoid } from "./deps.ts";
 import CONFIG from "./config.ts";
 import Database from "./src/utils/database.ts";
 
+Deno.mkdir(CONFIG.ENTROPY_IMAGES, { recursive: true })
+    .catch(e => console.error(`${CONFIG.ENTROPY_IMAGES} exists.`))
+// .then(e => console.log(`${CONFIG.ENTROPY_IMAGES} created.`))
+
 console.log("[Entropy] online");
 console.log(CONFIG)
 type files = {

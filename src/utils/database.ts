@@ -1,5 +1,5 @@
 import { MongoClient, Bson } from '../../deps.ts'
-import CONFIG from "../../configs.ts";
+import CONFIG from "../../config.ts";
 
 const client = new MongoClient();
 await client.connect(CONFIG.MONGO_STRING);

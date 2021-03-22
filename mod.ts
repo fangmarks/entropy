@@ -1,9 +1,10 @@
 import server from "./src/utils/server.ts";
 import { nanoid } from "./deps.ts";
-import CONFIG from "./configs.ts";
+import CONFIG from "./config.ts";
 import Database from "./src/utils/database.ts";
 
 console.log("[Entropy] online");
+console.log(CONFIG)
 type files = {
     [key: string]: Blob;
 };
